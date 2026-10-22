@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENZUgames · GTA V</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080c;
+  --surface:#111320;
+  --border:rgba(255,255,255,.08);
+  --border-strong:rgba(255,255,255,.14);
+  --text:#f2f2f7;
+  --text-dim:#8a8d99;
+  --green:#22c55e;
+  --green-bright:#4ade80;
+  --green-glow:rgba(34,197,94,.45);
+  --green-soft:rgba(34,197,94,.12);
+  --gold:#ffc800;
+  --font:'Inter',system-ui,sans-serif;
+  --font-display:'Space Grotesk','Inter',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* === pozadí === */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:
+  radial-gradient(ellipse 900px 600px at 25% 15%, rgba(34,197,94,.13), transparent 60%),
+  radial-gradient(ellipse 800px 600px at 80% 85%, rgba(122,45,255,.10), transparent 60%),
+  var(--bg);
+}
+.bg::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center, #000 25%, transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse at center, #000 25%, transparent 80%);
+}
+.bg::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,.8) 100%);
+  pointer-events:none;
+}
+.glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.5;animation:float 16s ease-in-out infinite;}
+.glow.one{width:500px;height:500px;background:var(--green);top:-150px;left:-120px;}
+.glow.two{width:450px;height:450px;background:#7a2dff;bottom:-150px;right:-100px;animation-delay:-6s;}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(40px,-30px) scale(1.15);}}
+
+/* === topbar === */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-mark{
+  width:40px;height:40px;border-radius:12px;
+  background:linear-gradient(135deg,#4ade80,#22c55e 50%,#16a34a);
+  display:grid;place-items:center;
+  box-shadow:0 6px 24px var(--green-glow),inset 0 1px 0 rgba(255,255,255,.4);
+  position:relative;overflow:hidden;
+}
+.brand-mark::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,.5) 50%,transparent 60%);
+  transform:translateX(-100%);animation:shine 4s infinite;
+}
+@keyframes shine{0%,75%{transform:translateX(-100%);}100%{transform:translateX(100%);}}
+.brand-mark svg{width:22px;height:22px;position:relative;z-index:1;}
+.brand-text{display:flex;flex-direction:column;line-height:1;}
+.brand-name{font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:-.5px;}
+.brand-name span{color:var(--green-bright);}
+.brand-tag{font-size:9px;letter-spacing:3px;color:var(--text-dim);font-weight:700;margin-top:3px;text-transform:uppercase;}
+
+.top-badge{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:999px;
+  background:var(--green-soft);border:1px solid rgba(34,197,94,.3);
+  font-size:12px;font-weight:700;color:var(--green-bright);letter-spacing:.3px;
+  backdrop-filter:blur(10px);
+}
+.top-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green-bright);box-shadow:0 0 10px var(--green-bright);animation:pulse 1.6s infinite;}
+@keyframes pulse{50%{opacity:.35;}}
+
+/* === launcher === */
+.launcher{
+  position:relative;z-index:5;
+  height:100vh;height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:100px 24px 60px;
+  gap:28px;
+}
+
+.hero{
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  gap:20px;
+}
+.cover-wrap{
+  position:relative;
+  padding:8px;
+  border-radius:28px;
+  background:linear-gradient(135deg,rgba(34,197,94,.5),rgba(255,200,0,.2),rgba(122,45,255,.4));
+  box-shadow:0 24px 70px -12px var(--green-glow),0 0 90px -24px var(--green-glow);
+  animation:breathe 5s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.cover{
+  width:170px;height:170px;border-radius:22px;object-fit:cover;display:block;
+  border:2px solid rgba(255,255,255,.1);
+}
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(36px,6vw,62px);
+  font-weight:700;letter-spacing:-2px;line-height:1;
+}
+.hero h1 .grad{
+  background:linear-gradient(120deg,#22c55e 0%,#4ade80 40%,#ffc800 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero .sub{
+  font-size:12px;letter-spacing:5px;font-weight:700;color:var(--text-dim);
+  text-transform:uppercase;
+}
+
+/* play */
+.play-btn{
+  display:inline-flex;align-items:center;gap:14px;
+  padding:20px 64px;
+  font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:.5px;
+  color:#04120a;
+  background:linear-gradient(135deg,#4ade80,#22c55e 55%,#16a34a);
+  border:none;border-radius:16px;cursor:pointer;
+  box-shadow:0 14px 40px -6px var(--green-glow),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .18s ease,box-shadow .18s ease;
+  position:relative;overflow:hidden;
+}
+.play-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);
+  transform:translateX(-100%);transition:.7s;
+}
+.play-btn:hover::after{transform:translateX(100%);}
+.play-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 20px 55px -6px var(--green-glow),inset 0 1px 0 rgba(255,255,255,.5);}
+.play-btn:active{transform:translateY(0) scale(1);}
+.play-btn svg{width:22px;height:22px;}
+
+/* footer */
+.footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:5;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 40px;
+  font-size:11px;color:#555;letter-spacing:.5px;
+}
+
+/* === OVERLAY === */
+.overlay{position:fixed;inset:0;z-index:1000;display:none;flex-direction:column;background:#000;}
+.overlay.active{display:flex;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.overlay-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 20px;background:var(--surface);
+  border-bottom:1px solid var(--border);flex-shrink:0;gap:12px;
+}
+.overlay-left{display:flex;align-items:center;gap:12px;min-width:0;}
+.overlay-logo{
+  width:34px;height:34px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#4ade80,#16a34a);
+  display:grid;place-items:center;
+  box-shadow:0 4px 14px var(--green-glow);
+}
+.overlay-logo svg{width:18px;height:18px;}
+.overlay-title{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.overlay-sub{font-size:11px;color:var(--text-dim);white-space:nowrap;}
+.overlay-actions{display:flex;gap:8px;flex-shrink:0;}
+.ov-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:8px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--text);font-size:12px;font-weight:600;cursor:pointer;
+  transition:.18s;font-family:var(--font);text-decoration:none;
+}
+.ov-btn:hover{background:rgba(255,255,255,.1);border-color:var(--border-strong);}
+.ov-btn.danger:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#fca5a5;}
+.ov-btn svg{width:14px;height:14px;}
+
+.iframe-wrapper{flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;}
+.iframe-wrapper iframe{width:100%;height:100%;border:none;display:block;}
+.spinner{
+  position:absolute;width:44px;height:44px;
+  border:3px solid rgba(255,255,255,.1);border-top-color:var(--green);
+  border-radius:50%;animation:spin .8s linear infinite;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.spinner.visible{opacity:1;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error-msg{
+  position:absolute;inset:0;display:none;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  padding:32px;text-align:center;background:rgba(7,8,12,.97);
+}
+.error-msg.visible{display:flex;}
+.error-icon{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);
+  display:grid;place-items:center;font-size:28px;margin-bottom:8px;
+}
+.error-msg h3{font-family:var(--font-display);font-size:20px;font-weight:700;}
+.error-msg p{color:var(--text-dim);font-size:14px;max-width:440px;line-height:1.6;}
+.error-msg a{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:8px;padding:12px 24px;border-radius:10px;
+  background:var(--green);color:#04120a;text-decoration:none;
+  font-weight:700;font-size:14px;transition:.18s;
+}
+.error-msg a:hover{background:#4ade80;transform:translateY(-2px);}
+
+/* responsive */
+@media(max-width:640px){
+  .topbar{padding:16px 20px;}
+  .brand-name{font-size:17px;}
+  .brand-mark{width:34px;height:34px;border-radius:10px;}
+  .top-badge{padding:6px 12px;font-size:11px;}
+  .hero h1{letter-spacing:-1px;}
+  .cover{width:130px;height:130px;border-radius:18px;}
+  .play-btn{padding:18px 48px;font-size:17px;}
+  .footer{padding:12px 20px;font-size:9px;}
+}
+</style>
+</head>
+<body>
+
+<!-- pozadí -->
+<div class="bg">
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+</div>
+
+<!-- topbar -->
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#04120a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <div class="brand-name">SENZU<span>games</span></div>
+      <div class="brand-tag">Game Hub</div>
+    </div>
+  </div>
+  <div class="top-badge">
+    <span class="dot"></span>
+    <span>Server online</span>
+  </div>
+</header>
+
+<!-- launcher -->
+<main class="launcher">
+  <div class="hero">
+    <div class="cover-wrap">
+      <img class="cover" src="https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png" alt="GTA V">
+    </div>
+    <h1>Grand Theft Auto V<br><span class="grad">v prohlížeči.</span></h1>
+    <p class="sub">Los Santos · San Andreas</p>
+  </div>
+
+  <button class="play-btn" id="playBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    HRÁT NYNÍ
+  </button>
+</main>
+
+<!-- footer -->
+<footer class="footer">
+  <span>© 2024 SENZUgames · Fanouškovský launcher</span>
+  <span>GTA V © Rockstar Games</span>
+</footer>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="overlay-header">
+    <div class="overlay-left">
+      <div class="overlay-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#04120a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="overlay-title" id="overlayTitle">Načítání…</div>
+        <div class="overlay-sub" id="overlaySub">SENZUgames · GTA V</div>
+      </div>
+    </div>
+    <div class="overlay-actions">
+      <a class="ov-btn" id="openExternal" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        Nové okno
+      </a>
+      <button class="ov-btn danger" id="closeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        Zavřít
+      </button>
+    </div>
+  </div>
+  <div class="iframe-wrapper">
+    <div class="spinner" id="spinner"></div>
+    <iframe id="gameFrame" title="SENZUgames · GTA V" allowfullscreen allow="fullscreen; autoplay; gamepad; microphone"></iframe>
+    <div class="error-msg" id="errorMsg">
+      <div class="error-icon">⚠️</div>
+      <h3>Hru nelze vložit</h3>
+      <p>Tento server pravděpodobně blokuje vkládání do iframe (X-Frame-Options). Zkus hru otevřít v novém okně.</p>
+      <a href="https://v2.fiveplay.lol/game.html?mode=story&cfg=1_3-american" target="_blank" rel="noopener">
+        Otevřít v novém okně →
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const GAME_URL = 'https://v2.fiveplay.lol/game.html?mode=story&cfg=1_3-american';
+
+  const playBtn = document.getElementById('playBtn');
+  const overlay = document.getElementById('overlay');
+  const closeBtn = document.getElementById('closeBtn');
+  const gameFrame = document.getElementById('gameFrame');
+  const spinner = document.getElementById('spinner');
+  const errorMsg = document.getElementById('errorMsg');
+  const overlayTitle = document.getElementById('overlayTitle');
+  const overlaySub = document.getElementById('overlaySub');
+  const openExternal = document.getElementById('openExternal');
+
+  playBtn.addEventListener('click', () => {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    spinner.classList.add('visible');
+    errorMsg.classList.remove('visible');
+    overlayTitle.textContent = 'Načítání hry…';
+    overlaySub.textContent = 'Připojování k FivePlay';
+    openExternal.href = GAME_URL;
+    gameFrame.src = GAME_URL;
+  });
+
+  function closeGame(){
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  closeBtn.addEventListener('click', closeGame);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) closeGame();
+  });
+
+  gameFrame.addEventListener('load', () => {
+    spinner.classList.remove('visible');
+    overlayTitle.textContent = 'Grand Theft Auto V';
+    overlaySub.textContent = 'SENZUgames · FivePlay';
+    try {
+      const doc = gameFrame.contentDocument || gameFrame.contentWindow.document;
+      if (!doc || !doc.body || doc.body.innerHTML.trim() === '') showError();
+    } catch (err) { /* cross-origin – ok */ }
+  });
+
+  gameFrame.addEventListener('error', showError);
+
+  function showError(){
+    spinner.classList.remove('visible');
+    errorMsg.classList.add('visible');
+    overlayTitle.textContent = 'Chyba načítání';
+    overlaySub.textContent = 'Server blokuje iframe';
+  }
+})();
+</script>
+</body>
+</html>
